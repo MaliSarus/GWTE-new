@@ -122,14 +122,10 @@ function cleanChunks() {
 }
 
 function cssInJs() {
-
-  src(paths.js + '/main.css', {allowEmpty: true})
+  return src(paths.js + '/main.css', {allowEmpty: true})
     .pipe(rename('chunks.css'))
     .pipe(dest(paths.css))
     .pipe(browserSync.stream())
-
-  return del(paths.js + '/main.css')
-
 }
 
 function images() {
