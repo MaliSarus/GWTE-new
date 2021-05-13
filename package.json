@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@babel/preset-env": "^7.12.7",
+    "@babel/core": "^7.14.2",
+    "@babel/preset-env": "^7.14.2",
     "babel-loader": "^8.2.2",
     "babel-plugin-module-resolver": "^4.0.0",
     "browser-sync": "^2.26.14",
@@ -38,6 +38,6 @@
   },
   "dependencies": {
     "smoothscroll-polyfill": "^0.4.4",
-    "swiper": "^6.5.8"
+    "swiper": "^6.6.1"
   }
 }
