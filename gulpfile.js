@@ -25,7 +25,7 @@ var paths = {
   css: './src/assets/css',
   js: './src/assets/js',
   images: './src/assets/images',
-  img: './src/assets/images',
+  img: './src/assets/img',
 };
 
 function express(cb) {
