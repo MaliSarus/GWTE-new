@@ -1,10 +1,12 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   entry:'./src/assets/js/app.js',
   output: {
-    filename: 'app.min.js'
+    filename: 'app.min.js',
+    chunkFilename: 'vendors.js',
   },
   mode: 'production',
   performance: {
@@ -35,9 +37,24 @@ module.exports = {
       },
     ]
   },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all"
+        }
+      }
+    }
+  },
   plugins: [
     new MiniCssExtractPlugin({
       chunkFilename: 'plugins.css'
-    })
+    }),
+    // new webpack.ProvidePlugin({ //if need jquery
+    //   $: 'jquery',
+    //   jQuery: 'jquery'
+    // }),
   ]
 }

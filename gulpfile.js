@@ -122,7 +122,7 @@ function cleanChunks() {
 }
 
 function cssInJs() {
-  return src(paths.js + '/main.css', {allowEmpty: true})
+  return src(paths.js + '/plugins.css', {allowEmpty: true})
     .pipe(rename('chunks.css'))
     .pipe(dest(paths.css))
     .pipe(browserSync.stream())
@@ -150,9 +150,9 @@ function createBuild() {
 function startwatch() {
   // watch(paths.src + '/**/*.twig', {usePolling: true}).on('change', browserSync.reload);
   watch(paths.sass + '/**/*', {usePolling: true}, styles);
-  watch([paths.js + '/**/*.js', '!' + paths.js + '**/app.min.js'], {usePolling: true}, series(cleanChunks,scripts))
+  watch([paths.js + '/**/*.js', '!' + paths.js + '**/app.min.js','!' + paths.js + '**/vendors.js'], {usePolling: true}, series(cleanChunks,scripts))
   watch(paths.images + '/**/*.{jpg,jpeg,png,webp,svg,gif}', {usePolling: true}, images)
-  watch(paths.js + '/main.css', {usePolling: true}, cssInJs)
+  watch(paths.js + '/plugins.css', {usePolling: true}, cssInJs)
   // watch(`${paths.src}/**/*.{${fileswatch}}`, {usePolling: true}).on('change', browserSync.reload)
 }
 
