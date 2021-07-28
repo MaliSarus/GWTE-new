@@ -16,6 +16,7 @@ const twig = require('gulp-twig');
 const plumber = require('gulp-plumber');
 const nodemon = require('gulp-nodemon');
 const flatmap = require('gulp-flatmap')
+const cleanCSS = require('gulp-clean-css');
 
 var paths = {
   src: './src',
@@ -92,6 +93,7 @@ function twigBuild(fileName, twigData) {
 
 
 function scripts() {
+  del(paths.js + '/chunks/*', {force: true})
   return src(paths.js + '/app.js', {allowEmpty: true})
     .pipe(webpack(require('./webpack.config'))).on('error', function handleError() {
       this.emit('end')
@@ -112,25 +114,28 @@ function styles() {
       cascade: false
     }))
     .pipe(gcmq())
+    .pipe(cleanCSS())
     // .pipe(rename('app.min.css'))
     .pipe(dest(paths.css))
     .pipe(browserSync.stream())
 }
 
-function cleanChunks() {
-  return del(paths.css + '/chunks.css')
-}
-
-function cssInJs() {
-  return src(paths.js + '/plugins.css', {allowEmpty: true})
-    .pipe(rename('chunks.css'))
+function minChunks() {
+  return src(paths.css + '/**/chunks.css')
+    .pipe(gcmq())
+    .pipe(cleanCSS())
+    .pipe(rename('chunks.min.css'))
     .pipe(dest(paths.css))
     .pipe(browserSync.stream())
 }
 
 function images() {
   return src(paths.images + '/**/*')
-    .pipe(imagemin())
+    .pipe(imagemin([
+      imagemin.gifsicle({interlaced: true}),
+      imagemin.mozjpeg({quality: 75, progressive: true}),
+      imagemin.optipng({optimizationLevel: 3, interlaced: true}),
+    ]))
     .pipe(dest(paths.img))
 }
 
@@ -150,9 +155,9 @@ function createBuild() {
 function startwatch() {
   // watch(paths.src + '/**/*.twig', {usePolling: true}).on('change', browserSync.reload);
   watch(paths.sass + '/**/*', {usePolling: true}, styles);
-  watch([paths.js + '/**/*.js', '!' + paths.js + '**/app.min.js','!' + paths.js + '**/vendors.js'], {usePolling: true}, series(cleanChunks,scripts))
+  watch([paths.js + '/**/*.js', '!' + paths.js + '**/app.min.js', '!' + paths.js + '/chunks/*.js'], {usePolling: true}, scripts)
   watch(paths.images + '/**/*.{jpg,jpeg,png,webp,svg,gif}', {usePolling: true}, images)
-  watch(paths.js + '/plugins.css', {usePolling: true}, cssInJs)
+  watch(paths.css + '/**/chunks.css', {usePolling: true}, minChunks);
   // watch(`${paths.src}/**/*.{${fileswatch}}`, {usePolling: true}).on('change', browserSync.reload)
 }
 
@@ -162,4 +167,4 @@ exports.styles = styles
 exports.images = images
 exports.cleanimg = cleanimg
 exports.build = series(clearDist, styles, images, twigBuild, createBuild)
-exports.default = series(scripts, cssInJs, images, styles, parallel(browsersync, express, startwatch))
+exports.default = series(scripts, minChunks, images, styles, parallel( express,browsersync, startwatch))

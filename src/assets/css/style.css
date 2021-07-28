@@ -1,0 +1,1 @@
+@font-face{font-family:FONT_NAME;font-style:normal;font-weight:400;src:local("FONT_NAME"),url(../fonts/font.woff2) format("woff2"),url(../fonts/font.woff) format("woff");font-display:swap}*{-webkit-font-smoothing:antialiased;font-smooth:antialiased}body,html{margin:0;padding:0;scroll-behavior:smooth}

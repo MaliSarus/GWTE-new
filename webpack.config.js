@@ -6,7 +6,8 @@ module.exports = {
   entry:'./src/assets/js/app.js',
   output: {
     filename: 'app.min.js',
-    chunkFilename: 'vendors.js',
+    chunkFilename: './chunks/[name].js',
+    publicPath: '/assets/js/'
   },
   mode: 'production',
   performance: {
@@ -21,7 +22,8 @@ module.exports = {
         exclude: /(node_modules)/,
         loader: 'babel-loader',
         query: {
-          presets: ['@babel/env']
+          presets: ['@babel/env'],
+          plugins: ['@babel/plugin-syntax-dynamic-import']
         }
       },
       {
@@ -50,9 +52,9 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      chunkFilename: 'plugins.css'
+      chunkFilename: '../css/chunks.css'
     }),
-    // new webpack.ProvidePlugin({ //if need jquery
+    // new webpack.ProvidePlugin({
     //   $: 'jquery',
     //   jQuery: 'jquery'
     // }),

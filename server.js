@@ -6,8 +6,8 @@ const fs = require('fs')
 
 const app = express();
 
-const pathToChunk = './src/assets/css/chunks.css'
-const pathToVendors = './src/assets/js/vendors.js'
+const pathToChunk = './src/assets/css/chunks.min.css'
+const pathToVendors = './src/assets/js/chunks/vendors.js'
 
 const paths = {
   src: './src',
@@ -17,8 +17,10 @@ const paths = {
   css: './src/assets/css',
   js: './src/assets/js',
   images: './src/assets/images',
-  img: './src/assets/img',
+  img: './src/assets/images',
 };
+const dataForTwig = require('./src/data/data')
+
 
 Twig.cache(false);
 app.set('view engine', 'twig');
@@ -32,7 +34,6 @@ app.use(express.static(path.join('src')));
 
 /*, '/!**!/!*.html'*/
 app.get(['/:fileName'], (req, res) => {
-  const dataForTwig = require('./src/data/data')
   let chunk = false;
   try {
     if (fs.existsSync(pathToChunk)) {
@@ -65,7 +66,6 @@ app.get(['/:fileName'], (req, res) => {
   );
 });
 app.get('/', function (req, res) {
-  const dataForTwig = require('./src/data/data')
   let chunk = false;
   try {
     if (fs.existsSync(pathToChunk)) {

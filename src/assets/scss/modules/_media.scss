@@ -1,0 +1,36 @@
+@mixin mq($size) {
+  @media screen and (min-width: $size) {
+    @content;
+  }
+}
+
+@mixin mqMax($size) {
+  @media screen and (max-width: $size) {
+    @content;
+  }
+}
+
+@mixin forSm {
+  @media screen and (min-width: $smWidth) {
+    @content;
+  }
+}
+
+@mixin forMd {
+  @media screen and (min-width: $mdWidth) {
+    @content;
+  }
+}
+
+@mixin forLg {
+  @media screen and (min-width: $lgWidth) {
+    @content;
+  }
+}
+
+@mixin forXl {
+  @media screen and (min-width: $xlWidth) {
+    @content;
+  }
+}
+
